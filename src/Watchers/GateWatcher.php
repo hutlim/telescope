@@ -7,7 +7,7 @@ use Laravel\Telescope\Telescope;
 use Laravel\Telescope\FormatModel;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\IncomingEntry;
-use Illuminate\Database\Eloquent\Model;
+use Moloquent as Model;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 class GateWatcher extends Watcher

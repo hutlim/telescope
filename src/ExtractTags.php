@@ -5,7 +5,7 @@ namespace Laravel\Telescope;
 use stdClass;
 use ReflectionClass;
 use Illuminate\Support\Arr;
-use Illuminate\Database\Eloquent\Model;
+use Moloquent as Model;
 use Illuminate\Mail\SendQueuedMailable;
 use Illuminate\Events\CallQueuedListener;
 use Illuminate\Broadcasting\BroadcastEvent;

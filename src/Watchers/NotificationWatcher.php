@@ -6,7 +6,7 @@ use Laravel\Telescope\Telescope;
 use Laravel\Telescope\ExtractTags;
 use Laravel\Telescope\FormatModel;
 use Laravel\Telescope\IncomingEntry;
-use Illuminate\Database\Eloquent\Model;
+use Moloquent as Model;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Events\NotificationSent;

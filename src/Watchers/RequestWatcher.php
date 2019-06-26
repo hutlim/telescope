@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Telescope\Telescope;
 use Laravel\Telescope\FormatModel;
 use Laravel\Telescope\IncomingEntry;
-use Illuminate\Database\Eloquent\Model;
+use Moloquent as Model;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Response as IlluminateResponse;
 use Illuminate\Foundation\Http\Events\RequestHandled;

@@ -30,13 +30,6 @@ class EntryModel extends Model
     ];
 
     /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'uuid';
-
-    /**
      * The "type" of the auto-incrementing ID.
      *
      * @var string
@@ -64,8 +57,7 @@ class EntryModel extends Model
                 ->whereBatchId($query, $options)
                 ->whereTag($query, $options)
                 ->whereFamilyHash($query, $options)
-                ->whereBeforeSequence($query, $options)
-                ->filter($query, $options);
+                ->whereBeforeSequence($query, $options);
 
         return $query;
     }
