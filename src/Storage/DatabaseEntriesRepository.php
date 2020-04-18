@@ -11,6 +11,7 @@ use Laravel\Telescope\Contracts\PrunableRepository;
 use Laravel\Telescope\Contracts\ClearableRepository;
 use Laravel\Telescope\Contracts\TerminableRepository;
 use Laravel\Telescope\Contracts\EntriesRepository as Contract;
+use Illuminate\Support\Str;
 
 class DatabaseEntriesRepository implements Contract, ClearableRepository, PrunableRepository, TerminableRepository
 {
@@ -128,7 +129,7 @@ class DatabaseEntriesRepository implements Contract, ClearableRepository, Prunab
         $entries->chunk($this->chunkSize)->each(function ($chunked) use ($table) {
             $table->insert($chunked->map(function ($entry) {
                 $entry->content = json_encode($entry->content);
-
+                $entry->uuid = (string)Str::uuid();
                 return $entry->toArray();
             })->toArray());
         });
@@ -144,7 +145,10 @@ class DatabaseEntriesRepository implements Contract, ClearableRepository, Prunab
      */
     protected function storeExceptions(Collection $exceptions)
     {
-        $this->table('telescope_entries')->insert($exceptions->map(function ($exception) {
+        if(empty($exceptions->isEmpty())){
+            return;    
+        }
+        $insert = $exceptions->map(function ($exception) {
             $occurrences = $this->table('telescope_entries')
                     ->where('type', EntryType::EXCEPTION)
                     ->where('family_hash', $exception->familyHash())
@@ -161,7 +165,11 @@ class DatabaseEntriesRepository implements Contract, ClearableRepository, Prunab
                     $exception->content, ['occurrences' => $occurrences + 1]
                 )),
             ]);
-        })->toArray());
+        })->toArray();
+        
+        if(!empty($insert)){
+            $this->table('telescope_entries')->insert($insert);
+        }
 
         $this->storeTags($exceptions->pluck('tags', 'uuid'));
     }
@@ -172,16 +180,24 @@ class DatabaseEntriesRepository implements Contract, ClearableRepository, Prunab
      * @param  \Illuminate\Support\Collection  $results
      * @return void
      */
-    protected function storeTags($results)
+    protected function storeTags(Collection $results)
     {
-        $this->table('telescope_entries_tags')->insert($results->flatMap(function ($tags, $uuid) {
+        if(empty($results->isEmpty())){
+            return;    
+        }
+        
+        $insert = $results->flatMap(function ($tags, $uuid) {
             return collect($tags)->map(function ($tag) use ($uuid) {
                 return [
                     'entry_uuid' => $uuid,
                     'tag' => $tag,
                 ];
             });
-        })->all());
+        })->all();
+        
+        if(!empty($insert)){
+            $this->table('telescope_entries_tags')->insert($insert);
+        }
     }
 
     /**
@@ -192,6 +208,9 @@ class DatabaseEntriesRepository implements Contract, ClearableRepository, Prunab
      */
     public function update(Collection $updates)
     {
+        if(empty($updates->isEmpty())){
+            return;    
+        }
         foreach ($updates as $update) {
             $entry = $this->table('telescope_entries')
                             ->where('uuid', $update->uuid)
