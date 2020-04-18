@@ -3,7 +3,7 @@
 namespace Laravel\Telescope;
 
 use ReflectionClass;
-use Illuminate\Database\Eloquent\Model;
+use Moloquent as Model;
 
 class ExtractProperties
 {

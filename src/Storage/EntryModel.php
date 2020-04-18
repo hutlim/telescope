@@ -2,7 +2,7 @@
 
 namespace Laravel\Telescope\Storage;
 
-use Illuminate\Database\Eloquent\Model;
+use Moloquent as Model;
 
 class EntryModel extends Model
 {

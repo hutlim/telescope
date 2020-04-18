@@ -3,7 +3,7 @@
 namespace Laravel\Telescope;
 
 use Illuminate\Support\Arr;
-use Illuminate\Database\Eloquent\Model;
+use Moloquent as Model;
 
 class FormatModel
 {
